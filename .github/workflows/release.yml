@@ -20,4 +20,5 @@ jobs:
       - run: git config --global user.name "Thien Nguyen"
       - run: git add -A -f asset lib package.json package-lock.json
       - run: git commit -m "Publish"
-      - run: git push origin dist
+      - run: git push https://${GH_TOKEN}@github.com/thiennguyen93/hexo-component-inferno.git#dist
+
