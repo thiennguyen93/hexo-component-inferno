@@ -17,3 +17,6 @@ Please refer to [this page](https://ppoffice.github.io/hexo-component-inferno/).
 ## Examples
 
 Please refer to tests in the `src` directory or take a look at [hexo-theme-icarus](https://github.com/ppoffice/hexo-theme-icarus).
+
+## Build version
+v1.0.0
