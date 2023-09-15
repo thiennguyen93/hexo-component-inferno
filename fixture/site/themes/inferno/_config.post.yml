@@ -1,0 +1,10 @@
+title: site title from layout config under theme dir
+
+int: 100
+float: 0.01
+bool: false
+str: '100'
+empty: null
+arr: [100, 200, 300]
+obj:
+  field: 100

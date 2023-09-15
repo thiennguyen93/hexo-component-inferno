@@ -1,0 +1,10 @@
+title: site title from theme config
+
+int: 10
+float: 0.1
+bool: true
+str: '10'
+empty: null
+arr: [10, 20, 30]
+obj:
+  field: 10
