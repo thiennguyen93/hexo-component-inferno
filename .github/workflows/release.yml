@@ -1,0 +1,21 @@
+name: Node.js Package
+
+on:
+  release:
+    types: [push]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: latest
+          registry-url: https://registry.npmjs.org/
+      - run: npm install
+      - run: npm run build
+      - run: git checkout --orphan dist
+      - run: git add -a asset lib package.json package-lock.json
+      - run: git commit -m "Publish"
+      - run: git push origin dist
