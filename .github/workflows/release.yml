@@ -12,6 +12,7 @@ jobs:
       - run: npm install
       - run: npm run build
       - run: git checkout --orphan dist
+      - run: git rm --cached -r .
       - run: git config --global user.email "me@thiennguyen.dev"
       - run: git config --global user.name "Thien Nguyen"
       - run: git add -f asset lib package.json package-lock.json
