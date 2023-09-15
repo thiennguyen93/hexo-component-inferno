@@ -5,6 +5,8 @@ on: [push]
 jobs:
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v3
       - run: npm install
@@ -12,7 +14,7 @@ jobs:
       - run: git checkout --orphan dist
       - run: git config --global user.email "me@thiennguyen.dev"
       - run: git config --global user.name "Thien Nguyen"
-      - run: git add -A -f asset lib package.json package-lock.json
+      - run: git add -f asset lib package.json package-lock.json
       - run: git commit -m "Publish"
-      - run: git push https://${GH_TOKEN}@github.com/thiennguyen93/hexo-component-inferno.git#dist
+      - run: git push origin dist
 
