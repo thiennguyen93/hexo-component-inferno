@@ -15,7 +15,7 @@ jobs:
       - run: git rm --cached -r .
       - run: git config --global user.email "me@thiennguyen.dev"
       - run: git config --global user.name "Thien Nguyen"
-      - run: git add -f asset lib package.json package-lock.json
+      - run: git add -f asset lib package.json
       - run: git commit -m "Publish"
       - run: git push origin dist
 
