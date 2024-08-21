@@ -31,11 +31,14 @@ class Insight extends Component {
 
     return (
       <>
-        <div class="searchbox">
+        <div class="searchbox thiennguyen-custom-searchbox">
           <div class="searchbox-container">
             <div class="searchbox-header">
               <div class="searchbox-input-container">
                 <input type="text" class="searchbox-input" placeholder={translation.hint} />
+              </div>
+              <div id="cmdKshortcut" class="searchbox-cmd-k-shortcut thiennguyen-custom-cmdk">
+                <span class="cmdk-label px-1 mx-1">⌘ K</span>
               </div>
               <a class="searchbox-close" href="javascript:;">
                 &times;
