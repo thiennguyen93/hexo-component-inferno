@@ -79,6 +79,7 @@ function loadAlgolia(config, translation) {
         selectedItem: 'active',
         disabledItem: 'disabled',
       },
+      scrollTo: false
     }),
   );
 
