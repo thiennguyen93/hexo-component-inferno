@@ -13,6 +13,7 @@ function loadAlgolia(config, translation) {
 
   search.addWidgets([
     instantsearch.widgets.configure({
+      hitsPerPage: 5,
       attributesToSnippet: ['excerpt'],
     }),
   ]);
