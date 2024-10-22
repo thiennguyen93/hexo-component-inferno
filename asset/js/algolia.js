@@ -23,7 +23,7 @@ function loadAlgolia(config, translation) {
 
   search.addWidgets([
     instantsearch.widgets.configure({
-      hitsPerPage: 20,
+      hitsPerPage: config?.config?.hitsPerPage || 10,
       attributesToSnippet: ['excerpt'],
     }),
   ]);
@@ -43,11 +43,13 @@ function loadAlgolia(config, translation) {
     }),
   );
 
-  search.addWidget(
-    instantsearch.widgets.poweredBy({
-      container: '#algolia-poweredby',
-    }),
-  );
+  if (config.showPoweredbyLabel === true) {
+    search.addWidget(
+      instantsearch.widgets.poweredBy({
+        container: '#algolia-poweredby',
+      }),
+    );
+  }
 
   search.addWidget(
     instantsearch.widgets.hits({

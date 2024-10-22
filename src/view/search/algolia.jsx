@@ -119,6 +119,11 @@ Algolia.Cacheable = cacheComponent(Algolia, 'search.algolia', (props) => {
       'dist/instantsearch.production.min.js',
     ),
     jsUrl: helper.url_for('/js/algolia.js'),
+    routing: algolia ? algolia.routing : false,
+    showPoweredbyLabel: algolia ? algolia.showPoweredbyLabel : false,
+    config: {
+      hitsPerPage: algolia?.config?.hitsPerPage || 10,
+    }
   };
 });
 
