@@ -13,7 +13,7 @@ function loadAlgolia(config, translation) {
 
   search.addWidgets([
     instantsearch.widgets.configure({
-      hitsPerPage: 5,
+      hitsPerPage: 20,
       attributesToSnippet: ['excerpt'],
     }),
   ]);
@@ -30,12 +30,6 @@ function loadAlgolia(config, translation) {
         form: 'searchbox-input-container',
         input: 'searchbox-input',
       },
-    }),
-  );
-
-  search.addWidget(
-    instantsearch.widgets.poweredBy({
-      container: '#algolia-poweredby',
     }),
   );
 
@@ -102,27 +96,49 @@ function loadAlgolia(config, translation) {
   function selectItemByDiff(value) {
     const $items = $.makeArray($container.find('.searchbox-result-item'));
     let prevPosition = -1;
+
     $items.forEach((item, index) => {
-      if ($(item).hasClass('active')) {
-        prevPosition = index;
-      }
+        if ($(item).hasClass('active')) {
+            prevPosition = index;
+        }
     });
-    const nextPosition = ($items.length + prevPosition + value) % $items.length;
+
+    let nextPosition = (prevPosition + value) % $items.length;
+
+    // Nếu cuộn từ item cuối về item đầu
+    if (nextPosition < 0) {
+        nextPosition = $items.length - 1; // quay về item cuối
+    }
+
     $($items[prevPosition]).removeClass('active');
     $($items[nextPosition]).addClass('active');
-    scrollTo($($items[nextPosition]));
+    
+    // Nếu nextPosition là 0 (item đầu tiên), cuộn về đầu
+    if (nextPosition === 0) {
+        $container.scrollTop(0);
+    } else {
+        scrollTo($($items[nextPosition]));
+    }
   }
 
   function scrollTo($item) {
     if ($item.length === 0) return;
-    const wrapperHeight = $container[0].clientHeight;
-    const itemTop = $item.position().top - $container.scrollTop();
-    const itemBottom = $item[0].clientHeight + $item.position().top;
-    if (itemBottom > wrapperHeight + $container.scrollTop()) {
-      $container.scrollTop(itemBottom - $container[0].clientHeight);
-    }
-    if (itemTop < 0) {
-      $container.scrollTop($item.position().top);
+
+    const container = $container[0];
+    const containerHeight = container.clientHeight;
+    const itemTop = $item.position().top + $container.scrollTop();
+    const itemHeight = $item.outerHeight();
+
+    // Kiểm tra nếu item nằm ngoài vùng nhìn thấy
+    if (itemTop + itemHeight > containerHeight + $container.scrollTop()) {
+        // Cuộn xuống để item nằm ở vị trí cuối cùng trong container
+        $container.scrollTop(itemTop + itemHeight - containerHeight);
+    } else if (itemTop < $container.scrollTop()) {
+        // Cuộn lên để item nằm ở vị trí đầu tiên trong container
+        $container.scrollTop(itemTop);
+    } else if ($item.is(':first-child') && $item.hasClass('active')) {
+        // Nếu item là item đầu tiên và đang active, cuộn lên về vị trí đầu
+        $container.scrollTop(0);
     }
   }
 
