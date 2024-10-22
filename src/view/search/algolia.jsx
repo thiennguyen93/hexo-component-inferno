@@ -126,6 +126,8 @@ Algolia.Cacheable = cacheComponent(Algolia, 'search.algolia', (props) => {
     showPoweredbyLabel: algolia ? algolia.showPoweredbyLabel : false,
     config: {
       hitsPerPage: algolia?.config?.hitsPerPage || 10,
+      padding: algolia?.config?.padding,
+      totalPages: algolia?.config?.totalPages,
     }
   };
 });

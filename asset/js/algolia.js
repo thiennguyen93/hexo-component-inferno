@@ -97,7 +97,9 @@ function loadAlgolia(config, translation) {
         selectedItem: 'active',
         disabledItem: 'disabled',
       },
-      scrollTo: false
+      scrollTo: false,
+      totalPages: config?.config?.totalPages,
+      padding: config?.config?.padding,
     }),
   );
 
