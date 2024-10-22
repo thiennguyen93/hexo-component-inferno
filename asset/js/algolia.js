@@ -44,6 +44,12 @@ function loadAlgolia(config, translation) {
   );
 
   search.addWidget(
+    instantsearch.widgets.poweredBy({
+      container: '#algolia-poweredby',
+    }),
+  );
+
+  search.addWidget(
     instantsearch.widgets.hits({
       container: '.searchbox-body',
       escapeHTML: false,
