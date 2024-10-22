@@ -184,10 +184,20 @@ function loadAlgolia(config, translation) {
           $main.removeClass('show');
           break;
         case 38: // UP
+          e.preventDefault()
           selectItemByDiff(-1);
           break;
         case 40: // DOWN
+          e.preventDefault()
           selectItemByDiff(1);
+          break;
+        case 37: // LEFT
+          e.preventDefault();
+          // Thêm logic cho mũi tên trái ở đây
+          break;
+        case 39: // RIGHT
+          e.preventDefault();
+          // Thêm logic cho mũi tên phải ở đây
           break;
         case 13: // ENTER
           gotoLink($container.find('.searchbox-result-item.active').eq(0));
