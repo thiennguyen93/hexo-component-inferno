@@ -3,8 +3,18 @@
 function loadAlgolia(config, translation) {
 
   const $main = $('.searchbox');
-  const $input = $main.find('.searchbox-input');
   const $container = $main.find('.searchbox-body');
+
+  if ($container.length) { // Kiểm tra xem $container có phần tử nào không
+    $container.on('wheel', function(event) { // Sử dụng $container trực tiếp
+        const deltaY = event.originalEvent.deltaY;
+        // Ngăn chặn sự kiện cuộn của trang chính
+        if (deltaY !== 0) {
+            event.preventDefault();
+            $container.scrollTop($container.scrollTop() + deltaY); // Cập nhật vị trí cuộn
+        }
+    });
+  }
 
   const search = instantsearch({
     indexName: config.indexName,
@@ -97,28 +107,31 @@ function loadAlgolia(config, translation) {
     const $items = $.makeArray($container.find('.searchbox-result-item'));
     let prevPosition = -1;
 
+    // Tìm vị trí hiện tại của mục đang active
     $items.forEach((item, index) => {
         if ($(item).hasClass('active')) {
             prevPosition = index;
         }
     });
 
-    let nextPosition = (prevPosition + value) % $items.length;
+    // Tính toán nextPosition
+    let nextPosition = prevPosition + value;
 
-    // Nếu cuộn từ item cuối về item đầu
+    // Giới hạn nextPosition trong khoảng hợp lệ
     if (nextPosition < 0) {
-        nextPosition = $items.length - 1; // quay về item cuối
+        nextPosition = 0;
+    } else if (nextPosition >= $items.length) {
+        nextPosition = $items.length - 1;
     }
 
-    $($items[prevPosition]).removeClass('active');
-    $($items[nextPosition]).addClass('active');
-    
-    // Nếu nextPosition là 0 (item đầu tiên), cuộn về đầu
-    if (nextPosition === 0) {
-        $container.scrollTop(0);
-    } else {
-        scrollTo($($items[nextPosition]));
+    // Cập nhật trạng thái active
+    if (prevPosition !== -1) {
+        $($items[prevPosition]).removeClass('active');
     }
+    $($items[nextPosition]).addClass('active');
+
+    // Cuộn đến mục mới nếu cần
+    scrollTo($($items[nextPosition]));
   }
 
   function scrollTo($item) {
@@ -126,19 +139,21 @@ function loadAlgolia(config, translation) {
 
     const container = $container[0];
     const containerHeight = container.clientHeight;
-    const itemTop = $item.position().top + $container.scrollTop();
+    const containerScrollTop = $container.scrollTop();
+    const itemRect = $item[0].getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+    
+    // Tính toán vị trí của item trong container
+    const itemTop = itemRect.top - containerRect.top + containerScrollTop;
     const itemHeight = $item.outerHeight();
 
-    // Kiểm tra nếu item nằm ngoài vùng nhìn thấy
-    if (itemTop + itemHeight > containerHeight + $container.scrollTop()) {
-        // Cuộn xuống để item nằm ở vị trí cuối cùng trong container
-        $container.scrollTop(itemTop + itemHeight - containerHeight);
-    } else if (itemTop < $container.scrollTop()) {
-        // Cuộn lên để item nằm ở vị trí đầu tiên trong container
-        $container.scrollTop(itemTop);
-    } else if ($item.is(':first-child') && $item.hasClass('active')) {
-        // Nếu item là item đầu tiên và đang active, cuộn lên về vị trí đầu
-        $container.scrollTop(0);
+    // Cuộn xuống để có một mục dư ra phía dưới
+    if (itemTop + itemHeight > containerScrollTop + containerHeight) {
+        $container.scrollTop(itemTop + itemHeight - containerHeight + itemHeight);
+    } 
+    // Cuộn lên để có một mục dư ra phía trên
+    else if (itemTop < containerScrollTop) {
+        $container.scrollTop(itemTop - itemHeight);
     }
   }
 
@@ -152,12 +167,15 @@ function loadAlgolia(config, translation) {
     .on('click', '.navbar-main .search', () => {
       $('.searchbox').toggleClass('show');
       $('.searchbox-input').focus();
+      $('body').toggleClass('overflow-hidden'); // Thêm hoặc loại bỏ lớp fixed
     })
     .on('click', '.searchbox .searchbox-mask', () => {
       $('.searchbox').removeClass('show');
+      $('body').removeClass('overflow-hidden'); // Đảm bảo loại bỏ lớp fixed
     })
     .on('click', '.searchbox-close', () => {
       $('.searchbox').removeClass('show');
+      $('body').removeClass('overflow-hidden'); // Đảm bảo loại bỏ lớp fixed
     })
     .on('keydown', (e) => {
       if (!$main.hasClass('show')) return;
