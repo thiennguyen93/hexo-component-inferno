@@ -34,6 +34,9 @@ class Algolia extends Component {
       jsUrl,
       algoliaSearchUrl,
       instantSearchUrl,
+      routing,
+      showPoweredbyLabel,
+      config: algoliaConfig,
     } = this.props;
 
     if (!applicationId || !apiKey || !indexName) {
@@ -45,7 +48,7 @@ class Algolia extends Component {
       );
     }
 
-    const config = { applicationId, apiKey, indexName };
+    const config = { applicationId, apiKey, indexName, routing, showPoweredbyLabel, config: algoliaConfig };
     const js = `document.addEventListener('DOMContentLoaded', function () {
             loadAlgolia(${JSON.stringify(config)}, ${JSON.stringify(translation)});
         });`;
