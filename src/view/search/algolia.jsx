@@ -62,6 +62,9 @@ class Algolia extends Component {
               <div
                 id="algolia-poweredby"
                 style="display:flex;margin:0 .5em 0 1em;align-items:center;line-height:0"></div>
+              <div id="cmdKshortcut" class="searchbox-cmd-k-shortcut thiennguyen-custom-cmdk">
+                <span class="cmdk-label px-1 mx-1">⌘ K</span>
+              </div>
               <a class="searchbox-close" href="javascript:;">
                 &times;
               </a>
