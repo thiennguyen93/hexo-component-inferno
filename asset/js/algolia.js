@@ -174,7 +174,7 @@ function loadAlgolia(config, translation) {
   }
 
   $(document)
-    .on('click', '.navbar-main .search', () => {
+    .on('click', 'a.navbar-item.search', () => {
       $('.searchbox').toggleClass('show');
       $('.searchbox-input').focus();
       $('body').toggleClass('overflow-hidden'); // Thêm hoặc loại bỏ lớp fixed
