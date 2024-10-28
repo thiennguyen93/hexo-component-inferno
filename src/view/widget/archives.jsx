@@ -112,12 +112,14 @@ Archives.Cacheable = cacheComponent(Archives, 'widget.archives', (props) => {
     const month = date.month() + 1;
     const name = date.format(format || (group_by === 'monthly' ? 'MMMM YYYY' : 'YYYY'));
     const lastData = data[length - 1];
+    const { path } = post;
 
     if (!lastData || lastData.name !== name) {
       length = data.push({
         name,
         year,
         month,
+        path,
         count: 1,
       });
     } else {
@@ -140,6 +142,9 @@ Archives.Cacheable = cacheComponent(Archives, 'widget.archives', (props) => {
     items: data.map((item) => ({
       name: item.name,
       count: item.count,
+      year: item.year,
+      month: item.month,
+      path: item.path,
       url: link(item),
     })),
     title: _p('common.archive', Infinity),
