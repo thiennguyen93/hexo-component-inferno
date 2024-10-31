@@ -42,12 +42,16 @@ module.exports = class extends Component {
         ) : null}
         <div class="media-content">
           <p class="date">
+            {<i class="fa-regular fa-calendar mr-1"></i>}
             <time dateTime={dateXml}>{date}</time>
+            <span class="mx-2">/</span>
+            {<i class="fa-solid fa-folder-open mr-1"></i>}
+            <span>{categoryTags}</span>
           </p>
           <p class="title">
             <a href={url}>{title}</a>
           </p>
-          {categoryTags.length ? <p class="categories">{categoryTags}</p> : null}
+          {/* {categoryTags.length ? <p class="categories">{categoryTags}</p> : null} */}
         </div>
       </article>
     );
