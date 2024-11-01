@@ -262,28 +262,55 @@ function loadInsight(config, translation) {
 
   function scrollTo($item) {
     if ($item.length === 0) return;
-    const wrapperHeight = $container[0].clientHeight;
-    const itemTop = $item.position().top - $container.scrollTop();
-    const itemBottom = $item[0].clientHeight + $item.position().top;
-    if (itemBottom > wrapperHeight + $container.scrollTop()) {
-      $container.scrollTop(itemBottom - $container[0].clientHeight);
-    }
-    if (itemTop < 0) {
-      $container.scrollTop($item.position().top);
+
+    const container = $container[0];
+    const containerHeight = container.clientHeight;
+    const containerScrollTop = $container.scrollTop();
+    const itemRect = $item[0].getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+    
+    // Tính toán vị trí của item trong container
+    const itemTop = itemRect.top - containerRect.top + containerScrollTop;
+    const itemHeight = $item.outerHeight();
+
+    // Cuộn xuống để có một mục dư ra phía dưới
+    if (itemTop + itemHeight > containerScrollTop + containerHeight) {
+        $container.scrollTop(itemTop + itemHeight - containerHeight + itemHeight);
+    } 
+    // Cuộn lên để có một mục dư ra phía trên
+    else if (itemTop < containerScrollTop) {
+        $container.scrollTop(itemTop - itemHeight);
     }
   }
 
   function selectItemByDiff(value) {
     const $items = $.makeArray($container.find('.searchbox-result-item'));
     let prevPosition = -1;
+
+    // Tìm vị trí hiện tại của mục đang active
     $items.forEach((item, index) => {
-      if ($(item).hasClass('active')) {
-        prevPosition = index;
-      }
+        if ($(item).hasClass('active')) {
+            prevPosition = index;
+        }
     });
-    const nextPosition = ($items.length + prevPosition + value) % $items.length;
-    $($items[prevPosition]).removeClass('active');
+
+    // Tính toán nextPosition
+    let nextPosition = prevPosition + value;
+
+    // Giới hạn nextPosition trong khoảng hợp lệ
+    if (nextPosition < 0) {
+        nextPosition = 0;
+    } else if (nextPosition >= $items.length) {
+        nextPosition = $items.length - 1;
+    }
+
+    // Cập nhật trạng thái active
+    if (prevPosition !== -1) {
+        $($items[prevPosition]).removeClass('active');
+    }
     $($items[nextPosition]).addClass('active');
+
+    // Cuộn đến mục mới nếu cần
     scrollTo($($items[nextPosition]));
   }
 
@@ -306,7 +333,7 @@ function loadInsight(config, translation) {
 
   let touch = false;
   $(document)
-    .on('click focus', '.navbar-main .search', () => {
+    .on('click focus', 'a.navbar-item.search', () => {
       $main.addClass('show');
       $main.find('.searchbox-input').focus();
     })
