@@ -19,4 +19,4 @@ Please refer to [this page](https://ppoffice.github.io/hexo-component-inferno/).
 Please refer to tests in the `src` directory or take a look at [hexo-theme-icarus](https://github.com/ppoffice/hexo-theme-icarus).
 
 ## Build version
-v1.0.0
+v1.0.1
